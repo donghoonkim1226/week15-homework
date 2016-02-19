@@ -2,12 +2,15 @@ var express = require('express');
 var expressHandelbars = require('express-handlebars');
 var bodyParser = require('body-parser');
 var Sequelize = require('sequelize');
+var bcrypt = require('bcryptjs');
 
 var sequelize = new Sequelize('RCB_class_db', 'root');
 
 var PORT = process.env.NODE_ENV || 3000;
 
 var app = express();
+
+app.use('/static', express.static('public'));
 
 app.engine('handlebars', expressHandelbars({
 	defaultLayout: 'main'

@@ -23,6 +23,22 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+app.get('/registration', function(req, res) {
+  res.render('registration');
+});
+
+app.get('/login', function(req, res) {
+  res.render('login');
+});
+
+app.get('/student', function(req, res) {
+  res.render('student');
+});
+
+app.get('/instructor', function(req, res) {
+  res.render('instructor');
+});
+
 sequelize.sync().then(function() {
 	app.listen(PORT, function() {
 		console.log("Listening on PORT %s", PORT);

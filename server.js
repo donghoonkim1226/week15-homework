@@ -53,11 +53,10 @@ var Student_information = sequelize.define('student_information', {
 				msg: "Your password must be between 5-20 characters"
 			}
 		}
-	}, {
-		hooks: {
-			beforeCreate: function(input) {
-				input.password = bcrypt.hashSync(input.password, 10);
-			}
+	},
+	hooks: {
+		beforeCreate: function(input) {
+			input.password = bcrypt.hashSync(input.password, 10);
 		}
 	}
 });
@@ -91,11 +90,10 @@ var Instructor_information = sequelize.define('Instructor_information', {
 				msg: "Your password must be between 5-20 characters"
 			}
 		}
-	}, {
-		hooks: {
-			beforeCreate: function(input) {
-				input.password = bcrypt.hashSync(input.password, 10);
-			}
+	},
+	hooks: {
+		beforeCreate: function(input) {
+			input.password = bcrypt.hashSync(input.password, 10);
 		}
 	}
 });
@@ -129,11 +127,10 @@ var TA_information = sequelize.define('ta_information', {
 				msg: "Your password must be between 5-20 characters"
 			}
 		}
-	}, {
-		hooks: {
-			beforeCreate: function(input) {
-				input.password = bcrypt.hashSync(input.password, 10);
-			}
+	}, 
+	hooks: {
+		beforeCreate: function(input) {
+			input.password = bcrypt.hashSync(input.password, 10);
 		}
 	}
 });

@@ -10,6 +10,38 @@ var PORT = process.env.NODE_ENV || 3000;
 
 var app = express();
 
+var Student_information = sequelize.define('student_information', {
+	first_name: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			is: ["^[a-z]+$",'i']
+		}
+	},
+	last_name: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			is: ["^[a-z]+$",'i']
+		}
+	},
+	email: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		unique: true
+	},
+	password: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			len: {
+				args: [5,20],
+				msg: "Your password must be between 5-20 characters"
+			}
+		}
+	}
+});
+
 app.use('/static', express.static('public'));
 
 app.engine('handlebars', expressHandelbars({

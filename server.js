@@ -62,10 +62,10 @@ passport.use(new passportLocal.Strategy(function(username, password, done) {
 
 //change the object used to authenticate to a smaller token, and protects the server from attacks
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+    done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
-  done(null, { id: id, username: id })
+    done(null, { id: id, username: id })
 });
 
 // Models
@@ -213,9 +213,33 @@ app.get('/instructor', function(req, res) {
   res.render('instructor');
 });
 
+app.get('/ta', function(req, res) {
+  res.render('ta_instructor');
+});
+
 // Posting Routes
-app.post('/save', function(req, res) {
+
+// Student posting Route
+app.post('/studentsave', function(req, res) {
 	Student_information.create(req.body).then(function(result) {
+		res.redirect('/?msg=Account created');
+	}).catch(function(err) {
+		res.redirect('/?msg=' + err.errors[0].message);
+	});
+});
+
+// Instructor posting Route
+app.post('/instructorsave', function(req, res) {
+	Instructor_information.create(req.body).then(function(result) {
+		res.redirect('/?msg=Account created');
+	}).catch(function(err) {
+		res.redirect('/?msg=' + err.errors[0].message);
+	});
+});
+
+// TA posting Route
+app.post('/tasave', function(req, res) {
+	TA_information.create(req.body).then(function(result) {
 		res.redirect('/?msg=Account created');
 	}).catch(function(err) {
 		res.redirect('/?msg=' + err.errors[0].message);

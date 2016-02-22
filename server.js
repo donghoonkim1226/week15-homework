@@ -149,11 +149,11 @@ Instructor_information.hasMany(Student_information);
 
 // Routes
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', { msg: "Test" });
 });
 
 app.get('/registration', function(req, res) {
-  res.render('registration');
+  res.render('registration', { msg: req.query.msg});
 });
 
 app.get('/login', function(req, res) {
@@ -170,7 +170,11 @@ app.get('/instructor', function(req, res) {
 
 // Posting Routes
 app.post('/save', function(req, res) {
-
+	Student_information.create(req.body).then(function(result) {
+		res.redirect('/?msg=Account created');
+	}).catch(function(err) {
+		res.redirect('/?msg=' + err.errors[0].message);
+	});
 });
 
 // Database connection via sequelize

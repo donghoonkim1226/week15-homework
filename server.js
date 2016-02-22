@@ -23,6 +23,51 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
+//requiring passport last
+var passport = require('passport');
+var passportLocal = require('passport-local');
+//middleware init
+app.use(require('express-session')({
+    secret: 'crackalackin',
+    resave: true,
+    saveUninitialized: true,
+    cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) }, // 4 hours
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//passport use methed as callback when being authenticated
+passport.use(new passportLocal.Strategy(function(username, password, done) {
+  //check password in db
+  Student_information.findOne({
+    where: {
+      email: email
+  }
+}).then(function(user) {
+  //check password against hash
+  if(user){
+    bcrypt.compare(password, user.dataValues.password, function(err, user) {
+      if (Student_information) {
+        //if password is correct authenticate the user with cookie
+        done(null, { id: email, email: email });
+        } else{
+          done(null, null);
+        }
+      });
+    } else {
+      done(null, null);
+    }
+  });
+}));
+
+//change the object used to authenticate to a smaller token, and protects the server from attacks
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  done(null, { id: id, username: id })
+});
+
 // Models
 var Student_information = sequelize.define('student_information', {
 	first_name: {
@@ -176,6 +221,13 @@ app.post('/save', function(req, res) {
 		res.redirect('/?msg=' + err.errors[0].message);
 	});
 });
+
+// check login with DB Route
+app.post('/check', passport.authenticate('local', {
+	successRedirect: '/index',
+	failureRedirect: '/?msg=Login failure, please try again'
+}));
+
 
 // Database connection via sequelize
 sequelize.sync().then(function() {
